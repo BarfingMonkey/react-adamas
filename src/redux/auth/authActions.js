@@ -55,7 +55,6 @@ export const login=(formdata)=>(dispatch)=>{
 
 export const logout=()=>(dispatch)=>{
     AuthService.logout();
-
     dispatch({
         type: LOGOUT
     });

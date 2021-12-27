@@ -7,9 +7,11 @@ import {
 } from 'react-bootstrap';
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { signup } from '../redux/auth/authActions';
+import { Navigate } from 'react-router-dom';
+
 
 const SignUp = ()=>{
     let [user, setUser]= useState({
@@ -20,7 +22,6 @@ const SignUp = ()=>{
     })
     let [error, setError]= useState(null)
     const {data} = useSelector(state=>state.auth)
-
     let navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -51,6 +52,16 @@ const SignUp = ()=>{
                 navigate('/')
             })
     }
+    const handleGoogleSignUp=()=>{
+        console.log('clicked')
+        return(<a href="http:localhost:8000/api/google"></a>)
+        // axios({
+        //     method: 'get',
+        //     url: '',
+        //     withCredentials: true
+        // }).then((res)=>console.log(res.data))
+    }
+
     return(
         <>
         <Container>
@@ -87,6 +98,8 @@ const SignUp = ()=>{
                 </Form>
                 </Col>
             </Row>
+            {/* <Button onClick={()=>handleGoogleSignUp()}>Sign Up Using Google</Button> */}
+            <a href="http://localhost:8000/api/google" target="_blank">Sign Up Using Google</a>
         </Container>
         </>
     )

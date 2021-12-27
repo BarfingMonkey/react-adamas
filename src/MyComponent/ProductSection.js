@@ -48,6 +48,7 @@ const ProductSection=(props)=>{
     }, [])
     
     const {products}= useSelector(state=>state.products)
+    // const products= useSelector(state=>state.products.products)
     const {loading}= useSelector(state=>state.products)
     
     console.log(props.ProductCards)
