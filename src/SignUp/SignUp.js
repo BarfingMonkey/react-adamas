@@ -10,7 +10,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { signup } from '../redux/auth/authActions';
-import { Navigate } from 'react-router-dom';
+
 
 
 const SignUp = ()=>{
@@ -99,7 +99,7 @@ const SignUp = ()=>{
                 </Col>
             </Row>
             {/* <Button onClick={()=>handleGoogleSignUp()}>Sign Up Using Google</Button> */}
-            <a href="http://localhost:8000/api/google" target="_blank">Sign Up Using Google</a>
+            <a href="http://localhost:8000/api/google" >Sign Up Using Google</a>
         </Container>
         </>
     )

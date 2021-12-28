@@ -12,8 +12,6 @@ import HeaderTop from '../CommonComponents/Header/HeaderTop';
 import { useDispatch,useSelector } from 'react-redux';
 import { login } from '../redux/auth/authActions';
 
-
-
 const LogIn = ()=>{
     let [user, setUser]= useState({
         email: '',
@@ -21,7 +19,7 @@ const LogIn = ()=>{
     })
     const {isLoggedIn} = useSelector(state=>state.auth)
     const {data} = useSelector(state=> state.auth)
-    console.log(`login comp: ${data}`)
+    //console.log(`login comp: ${data}`)
     let navigate = useNavigate();
     const dispatch= useDispatch();
 

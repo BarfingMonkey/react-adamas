@@ -7,14 +7,6 @@ const signup = async (formdata)=>{
         data: formdata,
         withCredentials: true,
     })
-        .then((res)=>{    
-            if(res.data && res.data.user){
-                console.log(`auth service login: ${Object.keys(res.data)}`)
-                localStorage.setItem('token', res.data.token)
-                localStorage.setItem('user', res.data.user)
-            }
-            return res
-        })
 }
 
 const login = (formdata)=>{
@@ -24,15 +16,6 @@ const login = (formdata)=>{
         data: formdata,
         withCredentials: true
     })
-        .then((res)=>{
-            
-            if(res.data && res.data.user){
-                console.log(`auth service login: ${Object.keys(res.data)}`)
-                localStorage.setItem('token', res.data.token)
-                localStorage.setItem('user',  JSON.stringify(res.data.user))
-            }
-            return res
-        })
 }
 
 const logout=()=>{

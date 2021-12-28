@@ -6,21 +6,23 @@ import {
     LOGOUT,
   } from './authTypes';
 
-  const token= localStorage.getItem('token');
-  const user= localStorage.getItem('user')
+//   const initialState = token
+//   ? { isLoggedIn: true, data:{token, user} }
+//   : { isLoggedIn: false, data: null };
 
-  const initialState = token
-  ? { isLoggedIn: true, data:{token, user} }
-  : { isLoggedIn: false, data: null };
+    const initialState = {
+        isLoggedIn: false,
+        data: null
+    }
 
-  export default function(state=initialState, action){
+    export default function(state=initialState, action){
       const { type, payload} = action;
       console.log(`reducer type: ${type} payload: ${action.payload}`)
       switch(type){
         case SIGNUP_SUCCESS:
             return{
                 ...state,
-                isLoggedIn:true,
+                isLoggedIn:false,
                 data: payload.data
             };
         case SIGNUP_FAILURE:

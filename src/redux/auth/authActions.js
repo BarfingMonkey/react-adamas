@@ -33,7 +33,6 @@ export const signup = (formdata)=>(dispatch)=>{
 export const login=(formdata)=>(dispatch)=>{
     return AuthService.login(formdata).then(
         (res)=>{
-           
             if(res.data && res.data.user){
                 console.log(`auth action login: ${Object.keys(res)}`)
                 dispatch({
