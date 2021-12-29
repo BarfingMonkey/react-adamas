@@ -23,14 +23,14 @@ const LogIn = ()=>{
     let navigate = useNavigate();
     const dispatch= useDispatch();
 
-    useEffect(async() => {
-        if(data && data.user){
-            localStorage.setItem('token', data.token);
-            (<HeaderTop/>)
-            navigate('/')
-        }
-        console.log(data)
-    }, [data])
+    // useEffect(async() => {
+    //     if(data && data.user){
+    //         localStorage.setItem('token', data.token);
+    //         (<HeaderTop/>)
+    //         navigate('/')
+    //     }
+    //     console.log(data)
+    // }, [data])
     
     const handleChange = async(e) =>{
         setUser({
@@ -41,7 +41,7 @@ const LogIn = ()=>{
     
     const handleSubmit = async(e) =>{
         e.preventDefault()
-
+        console.log('clicked')
         const formdata= new FormData();
         formdata.append('email', user.email);
         formdata.append('password', user.password);
@@ -84,6 +84,7 @@ const LogIn = ()=>{
                 </Form>
                 </Col>
             </Row>
+            <a href="http://localhost:8000/api/google" >Log In Using Google</a>
         </Container>
         </>
     )

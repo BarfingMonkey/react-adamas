@@ -29,7 +29,7 @@ const HeaderTop= (prop)=>{
                   {isLoggedIn ? 
                   ( <>
                       <li><Link className="text-decoration-none text-light slash" to="pagenotfound">YOUR CART (0)</Link></li>
-                      <li><button className="text-decoration-none text-light log-out-button"  onClick={()=>dispatch(logout())}> LOG OUT</button></li>
+                      <li><button className="text-decoration-none text-light log-out-button"  onClick={()=>dispatch(logout()).then(()=>console.log('callback'))}> LOG OUT</button></li>
                     </>
                   )
                   :

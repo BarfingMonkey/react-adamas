@@ -7,17 +7,15 @@ import SocialMedia from './SocialMedia'
 import 'font-awesome/css/font-awesome.min.css'
 import FeaturedProducts from './FeaturedProducts';
 import FeaturedProductSection from './FeaturedProductSection';
-import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { googleSignup } from '../redux/auth/authActions';
+
+
 
 const Main =()=>{
+    const dispatch = useDispatch()
     useEffect(() => {
-        axios({
-            method: "GET",
-            url:'http://localhost:8000/api/user',
-            withCredentials: true,
-        })
-            .then(res=>console.log(res.data))
-            .catch(err=>console.log(err))
+        dispatch(googleSignup())
     }, [])
     
     return(

@@ -16,6 +16,7 @@ const login = (formdata)=>{
         data: formdata,
         withCredentials: true
     })
+    .then((res)=>console.log('login ip hit', res))
 }
 
 const logout=()=>{

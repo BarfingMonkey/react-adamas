@@ -5,56 +5,97 @@ import{
     SIGNUP_FAILURE,
     LOGOUT,
 } from './authTypes'
-
+import axios from 'axios'
 import AuthService from '../../services/authService'
 
 //auth
-export const signup = (formdata)=>(dispatch)=>{
-    return AuthService.signup(formdata).then(
-        (res)=>{
+export const googleSignup = ()=>(dispatch)=>{
+    return axios({
+        method: "GET",
+        url:'http://localhost:8000/api/user',
+        withCredentials: true,
+    })
+        .then((res)=>{
             if(res.data && res.data.user){
-                dispatch({
-                    type: SIGNUP_SUCCESS,
-                    payload: {data: res.data}
-                });
-                return Promise.resolve();
-            }
-            if(res.data && res.data.errors){
-                dispatch({
-                    type: SIGNUP_FAILURE,
-                    payload: {data: res.data}
-                })
-                return Promise.reject();
-            }
-        }
-    )
-}
-
-export const login=(formdata)=>(dispatch)=>{
-    return AuthService.login(formdata).then(
-        (res)=>{
-            if(res.data && res.data.user){
-                console.log(`auth action login: ${Object.keys(res)}`)
                 dispatch({
                     type: LOGIN_SUCCESS,
                     payload: {data: res.data}
                 });
                 return Promise.resolve();
             }
-            if(res.data && res.data.errors){
+            else{
                 dispatch({
                     type: LOGIN_FAILURE,
                     payload: {data: res.data}
                 })
                 return Promise.reject();
             }
+            console.log(res.data)
+        })
+        .catch(err=>console.log(err))
+}
+export const signup = (formdata)=>(dispatch)=>{
+    console.log('signup dispatched')
+    return axios({
+        method: 'post',
+        url: 'http://localhost:8000/api/signup',
+        data: formdata,
+        withCredentials: true,
+    })
+    .then((res)=>{
+        console.log('sign up ip hit', res)
+        if(res.data==="Successfully Authenticated"){
+            dispatch({
+                type: LOGIN_SUCCESS,
+                payload: {data: res.data}
+            });
+            return Promise.resolve();
         }
-    );
+        else{
+            dispatch({SIGNUP_FAILURE,
+                payload: {data: res.data}
+            })
+            return Promise.reject();
+        }
+    })
+}
+
+export const login=(formdata)=>(dispatch)=>{
+    console.log('login dispatched')
+    return axios({
+        method: 'post',
+        url: 'http://localhost:8000/api/login',
+        data: formdata,
+        withCredentials: true
+    })
+    .then((res)=>{
+        console.log('login ip hit', res)
+        if(res.data==="Successfully Authenticated"){
+            dispatch({
+                type: LOGIN_SUCCESS,
+                payload: {data: res.data}
+            });
+            return Promise.resolve();
+        }
+        else{
+            dispatch({
+                type: LOGIN_FAILURE,
+                payload: {data: res.data}
+            })
+            return Promise.reject();
+        }
+    })
 };
 
 export const logout=()=>(dispatch)=>{
-    AuthService.logout();
-    dispatch({
-        type: LOGOUT
-    });
+    return axios({
+        method: 'get',
+        url: 'http://localhost:8000/api/logout',
+        withCredentials: true
+    }).then((res)=>{
+        dispatch({
+            type: LOGOUT
+        });
+    })
+    
 };
