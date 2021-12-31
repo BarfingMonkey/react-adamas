@@ -70,7 +70,7 @@ export const login=(formdata)=>(dispatch)=>{
     })
     .then((res)=>{
         console.log('login ip hit', res)
-        if(res.data==="Successfully Authenticated"){
+        if(res.data && res.data.user){
             dispatch({
                 type: LOGIN_SUCCESS,
                 payload: {data: res.data}

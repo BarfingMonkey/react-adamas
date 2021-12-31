@@ -8,6 +8,7 @@ import HeaderComponent from '../src/CommonComponents/Header/HeaderComponent';
 import FooterComponent from '../src/CommonComponents/Footer/FooterComponent';
 import LogIn from './LogIn/LogIn';
 import ProductPreview from './ProductPreview/ProductPreview';
+import Cart from './Cart/Cart';
 
 import {Provider} from 'react-redux'
 import store from './redux/store'
@@ -27,6 +28,7 @@ function App() {
             </Route>
             <Route path="/signup" element={<SignUp/>}/>
             <Route path="/login" element={<LogIn/>}/>
+            <Route path="/cart" element={<Cart/>}/>
             <Route path='/*' element={<PageNotFound/>}/>
           </Routes>
         <FooterComponent/> 

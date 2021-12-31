@@ -27,6 +27,7 @@ const ProductPreview = ()=>{
     }
     const handleCart=()=>{
         const formdata= new FormData();
+        console.log(productId)
         formdata.append('productId', productId)
         formdata.append('qty', qty)
 

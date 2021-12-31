@@ -6,11 +6,13 @@ import { logout } from "../../redux/auth/authActions";
 const HeaderTop= (prop)=>{
   const navigate=useNavigate();
   const {isLoggedIn} = useSelector(state=>state.auth)
+  const {cartItems} = useSelector(state=>state.cart)
+  const [numOfCartItem, setNumOfCartItem] = useState(cartItems.length)
   const dispatch = useDispatch()
 
   useEffect(() => {
-    
-  }, [])
+    setNumOfCartItem(cartItems.length)
+  }, [cartItems])
   
     return(
         <div className="header-top">
@@ -28,7 +30,7 @@ const HeaderTop= (prop)=>{
                 <ul className="d-flex list-unstyled align-items-center my-auto">
                   {isLoggedIn ? 
                   ( <>
-                      <li><Link className="text-decoration-none text-light slash" to="pagenotfound">YOUR CART (0)</Link></li>
+                      <li><Link className="text-decoration-none text-light slash" to="/cart">YOUR CART ({numOfCartItem})</Link></li>
                       <li><button className="text-decoration-none text-light log-out-button"  onClick={()=>dispatch(logout()).then(()=>console.log('callback'))}> LOG OUT</button></li>
                     </>
                   )
