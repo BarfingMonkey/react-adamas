@@ -4,12 +4,21 @@ import { deleteCart, getCart, putCart } from '../redux/cart/cartAction';
 import {
     Button,
 } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
 
 const Cart=()=> {
     const {cartItems}= useSelector(state=>state.cart)
-    let userId=useSelector(state=>state.auth.data?.user._id)
+    let {isLoggedIn}=useSelector(state=>state.auth)
+    console.log('login: ',isLoggedIn)
+    const navigate = useNavigate();
     const dispatch= useDispatch();
+
+    useEffect(()=>{
+        if(!isLoggedIn){
+            navigate('/login')
+        }
+    }, [cartItems])
     
     return (
         <div className='container'>
@@ -37,21 +46,24 @@ const Cart=()=> {
 }
 const TableRow=({cartItem})=>{
     let [qty, setQty] = useState(cartItem.qty)
+    let [cartId, setCartId] = useState(cartItem.cartId)
+    let {loading}=useSelector(state=>state.cart)
+
     const dispatch= useDispatch();
     useEffect(()=>{
         const formdata= new FormData();
         formdata.append('qty', qty);
-        console.log('formdata', formdata)
         console.log(qty)
-        //dispatch(putCart(formdata,cartItem._id))
-    },[])
+        if(!loading){
+            dispatch(putCart(formdata,cartItem._id))
+        }
+    },[qty])
     const handleChange=(e)=>{
         setQty(e.target.value)
     }
     const handleDelete=()=>{
         dispatch(deleteCart(cartItem._id))
     }
-
     return(
         <>
             <tr>
@@ -59,7 +71,7 @@ const TableRow=({cartItem})=>{
                 
                 <td>{cartItem.productInfo.name}</td>
                 <td>{cartItem.productInfo.price}</td>
-                <td><input  type="number" onChange={(e)=>handleChange(e)} min="1" value={qty} style={{width: "50px"}}/></td>
+                <td><input  type="number" onBlur={(e)=>handleChange(e)} min="1" defaultValue={qty} style={{width: "50px"}}/></td>
                 <td><Button onClick={()=>handleDelete()}>Delete</Button></td>
             </tr>
         </>

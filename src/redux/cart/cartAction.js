@@ -45,10 +45,10 @@ export const postCartRequest=()=>{
     }
 }
 
-export const postCartSuccess=(message)=>{
+export const postCartSuccess=(cartItems)=>{
     return{
         type: POST_CART_SUCCESS,
-        payload: message
+        payload: cartItems
     }
 }
 
@@ -130,7 +130,7 @@ export const postCart=(formdata, id)=>{
         })
             .then((res)=>{
                 //console.log(res)
-                dispatch(postCartSuccess(res.data.message))
+                dispatch(postCartSuccess(res.data))
             })
             .catch(error=>{
                 dispatch(postCartFailure(error))
@@ -147,7 +147,7 @@ export const putCart=(qty, id)=>{
             data: qty
         })
             .then((res)=>{
-                //const cartItems= res.data
+                const cartItems= res.data
                 dispatch(putCartSuccess(cartItems))
             })
             .catch(error=>{

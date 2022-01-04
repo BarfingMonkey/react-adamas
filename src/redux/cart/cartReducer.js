@@ -16,7 +16,6 @@ import{
 const initialState ={
     loading: false,
     cartItems: [],
-    message: '',
     error:'',
 }
 
@@ -51,14 +50,13 @@ const reducer = (state = initialState, action)=>{
                 ...state,
                 loading: false,
                 error: '',
-                message: action.payload,
+                cartItems: action.payload,
              }
         case POST_CART_FAILURE:
             return{
                 ...state,
                 loading: false,
                 error: action.payload,
-                message: '',
             }
         case PUT_CART_REQUEST:
             return{
