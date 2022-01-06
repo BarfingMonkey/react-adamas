@@ -5,11 +5,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getProduct } from "../redux/productpreview/productPreviewAction";
 import { postCart } from "../redux/cart/cartAction"
+import { useNavigate } from "react-router-dom";
 
 const ProductPreview = ()=>{
     let {id:productId}= useParams();
     const dispatch= useDispatch();
+    const navigate = useNavigate();
     const {productPreview}= useSelector(state=>state.productPreview)
+    const {isLoggedIn} = useSelector(state=>state.auth)
     const {_id:userId}= useSelector(state=>state.auth.data.user)
     let [qty, setQty]= useState(1)
     
@@ -26,12 +29,16 @@ const ProductPreview = ()=>{
         setQty(e.target.value)
     }
     const handleCart=()=>{
-        const formdata= new FormData();
-        console.log(productId)
-        formdata.append('productId', productId)
-        formdata.append('qty', qty)
-
-        dispatch(postCart(formdata, userId))
+        if(isLoggedIn){
+            const formdata= new FormData();
+            console.log(productId)
+            formdata.append('productId', productId)
+            formdata.append('qty', qty)
+            dispatch(postCart(formdata, userId))
+        }
+        else{
+            navigate('/login')
+        }
     }
     return(
         <div className="container">

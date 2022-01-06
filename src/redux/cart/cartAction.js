@@ -24,10 +24,10 @@ export const getCartRequest=()=>{
     }
 }
 
-export const getCartSuccess=(cartItems)=>{
+export const getCartSuccess=(cartItems, total)=>{
     return{
         type: GET_CART_SUCCESS,
-        payload: cartItems
+        payload: {cartItems, total}
     }
 }
 
@@ -45,10 +45,10 @@ export const postCartRequest=()=>{
     }
 }
 
-export const postCartSuccess=(cartItems)=>{
+export const postCartSuccess=(cartItems, total)=>{
     return{
         type: POST_CART_SUCCESS,
-        payload: cartItems
+        payload: {cartItems, total}
     }
 }
 
@@ -66,10 +66,10 @@ export const putCartRequest=(qty, id)=>{
     }
 }
 
-export const putCartSuccess=(cartItems)=>{
+export const putCartSuccess=(cartItems,total)=>{
     return{
         type: PUT_CART_SUCCESS,
-        payload: cartItems
+        payload: {cartItems, total}
     }
 }
 
@@ -87,10 +87,10 @@ export const deleteCartRequest=()=>{
     }
 }
 
-export const deleteCartSuccess=(cartItems)=>{
+export const deleteCartSuccess=(cartItems, total)=>{
     return{
         type: DELETE_CART_SUCCESS,
-        payload: cartItems
+        payload: {cartItems, total}
     }
 }
 
@@ -109,10 +109,15 @@ export const getCart=(id)=>{
             url:`http://localhost:8000/api/publicsite/cart/${id}`
         })
             .then((res)=>{
-                console.log(res)
                 const cartItems= res.data
-                console.log('cartItems', cartItems)
-                dispatch(getCartSuccess(cartItems))
+                let total=0;
+                if(cartItems.length>0){
+                    for(let cartItem of cartItems){
+                        total = total + (parseInt(cartItem.qty) * parseInt(cartItem.productInfo.price))
+                    }
+                }
+                console.log('total: ',total)
+                dispatch(getCartSuccess(cartItems,total))
             })
             .catch(error=>{
                 dispatch(getCartFailure(error))
@@ -129,8 +134,15 @@ export const postCart=(formdata, id)=>{
             data: formdata
         })
             .then((res)=>{
-                //console.log(res)
-                dispatch(postCartSuccess(res.data))
+                const cartItems= res.data
+                let total=0;
+                if(cartItems.length>0){
+                    for(let cartItem of cartItems){
+                        total = total + (parseInt(cartItem.qty) * parseInt(cartItem.productInfo.price))
+                    }
+                }
+                console.log('total: ',total)
+                dispatch(postCartSuccess(cartItems,total))
             })
             .catch(error=>{
                 dispatch(postCartFailure(error))
@@ -148,7 +160,14 @@ export const putCart=(qty, id)=>{
         })
             .then((res)=>{
                 const cartItems= res.data
-                dispatch(putCartSuccess(cartItems))
+                let total=0;
+                if(cartItems.length>0){
+                    for(let cartItem of cartItems){
+                        total = total + (parseInt(cartItem.qty) * parseInt(cartItem.productInfo.price))
+                    }
+                }
+                console.log('total: ',total)
+                dispatch(putCartSuccess(cartItems,total))
             })
             .catch(error=>{
                 dispatch(putCartFailure(error))
@@ -165,10 +184,17 @@ export const deleteCart=(id)=>{
         })
             .then((res)=>{
                 const cartItems= res.data
-                dispatch(postCartSuccess(cartItems))
+                let total=0;
+                if(cartItems.length>0){
+                    for(let cartItem of cartItems){
+                        total = total + (parseInt(cartItem.qty) * parseInt(cartItem.productInfo.price))
+                    }
+                }
+                console.log('total: ',total)
+                dispatch(deleteCartSuccess(cartItems,total))
             })
             .catch(error=>{
-                dispatch(postCartFailure(error))
+                dispatch(deleteCartFailure(error))
             })
     }
 }

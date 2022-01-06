@@ -7,11 +7,11 @@ const HeaderTop= (prop)=>{
   const navigate=useNavigate();
   const {isLoggedIn} = useSelector(state=>state.auth)
   const {cartItems} = useSelector(state=>state.cart)
-  const [numOfCartItem, setNumOfCartItem] = useState(cartItems.length)
+  const [numOfCartItem, setNumOfCartItem] = useState(cartItems.length > 0 ? cartItems.length : 0)
   const dispatch = useDispatch()
 
   useEffect(() => {
-    setNumOfCartItem(cartItems.length)
+    setNumOfCartItem(cartItems.length > 0 ? cartItems.length : 0)
   }, [cartItems])
   
     return(

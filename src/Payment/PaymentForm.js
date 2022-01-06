@@ -4,7 +4,8 @@ import {
     Container, Row, Col
 } from 'react-bootstrap';
 import { CardElement, useElements, useStripe } from '@stripe/react-stripe-js'
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { getCart } from '../redux/cart/cartAction';
 
 const CARD_OPTIONS = {
     iconStyle: "solid",
@@ -27,7 +28,11 @@ const CARD_OPTIONS = {
 }
 const PaymentForm = () => {
     const [success, setSuccess]= useState(false)
-    const amount = useSelector(state=>state.cart.cart.total)
+    const dispatch= useDispatch()
+    const amount = useSelector(state=>state.cart.total)
+    const userId = useSelector(state=>state.auth.data.user._id)
+    
+    
     console.log(amount)
     const stripe = useStripe()
     const elements = useElements()
@@ -42,14 +47,17 @@ const PaymentForm = () => {
         if(!error){
             try{
                 const {id} = paymentMethod
+
                 const response = await axios.post("http://localhost:8000/api/payment",{
-                    amount: amount*100,
-                    id
+                    amount: amount,
+                    id,
+                    userId
                 })
                 
                 if(response.data.success){
                     console.log("Successful payment")
                     setSuccess(true)
+                    dispatch(getCart(userId))
                 }
             }
             catch(error){
@@ -87,7 +95,6 @@ const PaymentForm = () => {
                         }
                     </Col>
                 </Row>
-
             </Container>
             
         </>

@@ -17,6 +17,7 @@ const initialState ={
     loading: false,
     cartItems: [],
     error:'',
+    total: 0
 }
 
 const reducer = (state = initialState, action)=>{
@@ -30,7 +31,8 @@ const reducer = (state = initialState, action)=>{
            return{
                ...state,
                loading: false,
-               cartItems: action.payload,
+               cartItems: action.payload.cartItems,
+               total: action.payload.total,
                error: '',
             }
        case GET_CART_FAILURE:
@@ -50,13 +52,15 @@ const reducer = (state = initialState, action)=>{
                 ...state,
                 loading: false,
                 error: '',
-                cartItems: action.payload,
+                cartItems: action.payload.cartItems,
+                total: action.payload.total
              }
         case POST_CART_FAILURE:
             return{
                 ...state,
                 loading: false,
                 error: action.payload,
+                total: 0
             }
         case PUT_CART_REQUEST:
             return{
@@ -67,7 +71,8 @@ const reducer = (state = initialState, action)=>{
             return{
                 ...state,
                 loading: false,
-                cartItems: action.payload,
+                cartItems: action.payload.cartItems,
+                total: action.payload.total,
                 error: '',
             }
         case PUT_CART_FAILURE:
@@ -75,7 +80,8 @@ const reducer = (state = initialState, action)=>{
                 ...state,
                 loading: false,
                 error: action.payload,
-                cartItems: []
+                cartItems: [],
+                total: 0
             }
         
             case DELETE_CART_REQUEST:
@@ -87,7 +93,8 @@ const reducer = (state = initialState, action)=>{
                 return{
                     ...state,
                     loading: false,
-                    cartItems: action.payload,
+                    cartItems: action.payload.cartItems,
+                    total: action.payload.total,
                     error: '',
                 }
             case DELETE_CART_FAILURE:
@@ -95,7 +102,8 @@ const reducer = (state = initialState, action)=>{
                     ...state,
                     loading: false,
                     error: action.payload,
-                    cartItems: []
+                    cartItems: [],
+                    total: 0
                 }
        default: return state
    }
