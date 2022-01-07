@@ -5,6 +5,7 @@ import productReducer from './product/productReducer'
 import shopReducer from './shop/shopReducer'
 import productPreviewReducer from './productpreview/productPreviewReducer'
 import cartReducer from './cart/cartReducer'
+import paymentHistoryReducer from './paymenthistory/paymentHistoryReducer'
 
 const rootReducer = combineReducers({
     auth: authReducer,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
     products: productReducer,
     shop: shopReducer,
     productPreview: productPreviewReducer,
-    cart: cartReducer
+    cart: cartReducer,
+    paymentHistory: paymentHistoryReducer, 
 })
 
 export default rootReducer;

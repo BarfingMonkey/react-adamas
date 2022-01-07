@@ -31,8 +31,6 @@ const PaymentForm = () => {
     const dispatch= useDispatch()
     const amount = useSelector(state=>state.cart.total)
     const userId = useSelector(state=>state.auth.data.user._id)
-    
-    
     console.log(amount)
     const stripe = useStripe()
     const elements = useElements()
@@ -43,17 +41,16 @@ const PaymentForm = () => {
             type: "card",
             card: elements.getElement(CardElement)
         })
-
         if(!error){
             try{
-                const {id} = paymentMethod
-
+                const {id, card} = paymentMethod
+                console.log('card: ', card)
                 const response = await axios.post("http://localhost:8000/api/payment",{
                     amount: amount,
                     id,
-                    userId
+                    userId,
+                    card
                 })
-                
                 if(response.data.success){
                     console.log("Successful payment")
                     setSuccess(true)
@@ -87,7 +84,6 @@ const PaymentForm = () => {
                                     </div>
                                 </form>
                             </div>
-                            
                             :
                             <div>
                                 <h2>Thank you for shopping with us!</h2>
@@ -96,7 +92,6 @@ const PaymentForm = () => {
                     </Col>
                 </Row>
             </Container>
-            
         </>
     )
 }

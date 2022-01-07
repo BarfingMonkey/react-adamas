@@ -11,9 +11,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { googleSignup } from '../redux/auth/authActions';
 import { getCart } from '../redux/cart/cartAction';
 
-
-
-
 const Main =()=>{
     const dispatch = useDispatch()
     let [userId,setUserId]=useState(useSelector(state=>state.auth.data?.user._id))
