@@ -37,32 +37,84 @@ const PaymentForm = () => {
 
     const handleSubmit = async(e)=>{
         e.preventDefault()
-        const {error, paymentMethod}= await stripe.createPaymentMethod({
+        		//STEP 1:
+        //create new payment method based on card and form information
+        const payload = await stripe.createPaymentMethod({
             type: "card",
-            card: elements.getElement(CardElement)
-        })
-        if(!error){
-            try{
-                const {id, card} = paymentMethod
-                console.log('card: ', card)
-                const response = await axios.post("http://localhost:8000/api/payment",{
-                    amount: amount,
-                    id,
-                    userId,
-                    card
-                })
-                if(response.data.success){
-                    console.log("Successful payment")
-                    setSuccess(true)
-                    dispatch(getCart(userId))
+            card: elements.getElement(CardElement),
+        });
+
+        //handle errors, otherwise set the new payment method in state
+        if (payload.error) {
+            setError(payload.error);
+            return;
+        } 
+		
+		//STEP 2:
+        //create a new payment request and get irs client secret + id from the server
+        const intentData = await axios
+            .post("http://localhost:8000/api/payment", {
+                //include the bet amount
+                amount: amount,
+            })
+            .then(
+                (response) => {
+                    //SUCCESS: put client secret and id into an object and return it
+                    return {
+                        secret: response.data.client_secret,
+                        id: response.data.intent_id,
+                    };
+                },
+                (error) => {
+                    //ERROR: log the error and return
+                    setError(error)
+                    return error;
                 }
-            }
-            catch(error){
-                console.log("Error", error)
-            }
+            );
+		
+		//STEP 3:
+        //confirm the payment and use the new payment method
+        const result = await stripe.confirmCardPayment(intentData.secret, {
+            payment_method: payload.paymentMethod.id,
+        });
+
+        //handle errors again
+        if (result.error) {
+            setError(result.error);
+            return
         }
-        else{
-            console.log(error.message)
+		
+		//STEP 4:
+        // The payment has been processed! send a confirmation to the server
+        if (result.paymentIntent.status === "succeeded") {
+            const confirmedPayment = await axios
+                .post("http://localhost:8000/api/confirmpayment", {
+                    //include id of payment
+                    amount: amount,
+                    id: payload.id,
+                    userId,
+                    card: payload.card,
+                    payment_id: intentData.id,
+                    payment_type: "stripe",
+                    //send any other data here
+                })
+                .then(
+                    (response) => {
+                        //SUCCESS: return the response message
+                        return response.data.success;
+                    },
+                    (error) => {
+                        //ERROR:
+                        console.log(error);
+                        setError(error)
+                        return error;
+                    }
+                );
+            //reset the state and show the success message
+            if (confirmedPayment) {
+                setSuccess(true);
+                dispatch(getCart(userId))
+            }
         }
     }
     return (
