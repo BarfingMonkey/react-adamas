@@ -13,11 +13,13 @@ import { getCart } from '../redux/cart/cartAction';
 
 const Main =()=>{
     const dispatch = useDispatch()
-    let [userId,setUserId]=useState(useSelector(state=>state.auth.data?.user._id))
+    let userId = useSelector(state=>state.auth.data?.user._id)
 
     useEffect(() => {
-        console.log('userId',userId)
-        dispatch(getCart(userId))
+        if(userId){
+            console.log('userId',userId)
+            dispatch(getCart(userId))
+        }
     }, [userId])
     
     return(

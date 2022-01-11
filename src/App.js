@@ -10,6 +10,8 @@ import LogIn from './LogIn/LogIn';
 import ProductPreview from './ProductPreview/ProductPreview';
 import Cart from './Cart/Cart';
 import StripePayment from './Payment/StripePayment';
+import PaymentHistory from './PaymentHistory/PaymentHistory';
+import ViewPayment from './PaymentHistory/ViewPayment';
 
 import {Provider} from 'react-redux'
 import store from './redux/store'
@@ -25,12 +27,14 @@ function App() {
             <Route path='/' element={<Main/>}/>
             <Route exact path='/' element={<ProtectedRoutes/>}>
               <Route path="/cart" element={<Cart/>}/>
+              <Route path="/payment" element={<StripePayment/>}/>
+              <Route path="/paymenthistory" element={<PaymentHistory/>}/>
+              <Route path="/viewpayment" element={<ViewPayment/>}/>
             </Route>
             <Route path='/categories' element={<Category />}/>
             <Route path="/categories/product/:id" element={<ProductPreview/>}/>
             <Route path="/signup" element={<SignUp/>}/>
             <Route path="/login" element={<LogIn/>}/>
-            <Route path="/payment" element={<StripePayment/>}/>
             <Route path='/*' element={<PageNotFound/>}/>
           </Routes>
         <FooterComponent/> 

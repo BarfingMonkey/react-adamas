@@ -1,10 +1,14 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { getPaymentHistory } from '../redux/paymenthistory/paymentHistoryAction'
+import Moment from 'react-moment';
+import { Link } from 'react-router-dom';
+
 
 const PaymentHistory = () => {
     const {paymentHistory} = useSelector(state=>state.paymentHistory)
-    let {userId}=useSelector(state=>state.auth.data.user._id)
+    let userId=useSelector(state=>state.auth.data.user._id)
+    console.log('userId: ',userId)
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -13,37 +17,56 @@ const PaymentHistory = () => {
 
     return (
         <>
-            {paymentHistory && paymentHistory.map((payment, i)=>{
-                return <TableRow key={i} payment={payment}/>;
-            })}
+            {paymentHistory.length>0 ?
+            (
+                <>
+                    <div className='d-flex justify-content-center mb-4'><h2>Your Payment History</h2></div>
+                    {paymentHistory && paymentHistory.map((payment, i)=>{
+                        return <TableRow key={i} payment={payment}/>;
+                    })}
+                </>
+            ) 
+            : (
+                <div className='d-flex justify-content-center mb-4'><h2>No payment history</h2></div>
+            )}
             
         </>
     )
 }
 
-const TableRow=({payment})=>{
+const TableRow=(prop)=>{
+    const [payment, setPayment] = useState(prop.payment)
+    useEffect(() => {
+        console.log('payment state: ', payment)
+    }, [payment])
     return(
         <>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Image</th>
-                        <th>Name</th>
-                        <th>Price</th>
-                        <th>QTY</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td><img src={`http://localhost:8000/${payment.productInfo.img}`} style={{width:"100px"}} alt="" /></td>
-                    <td>{payment.productInfo.name}</td>
-                    <td>{payment.productInfo.price}</td>
-                    <td><input  type="number" onBlur={(e)=>handleChange(e)} min="1" defaultValue={qty} style={{width: "50px"}}/></td>
-                    <td><Button onClick={()=>handleDelete()}>Delete</Button></td>
-                </tr>
-                </tbody>
-            </table>
+            <div className="container">
+                <div className="row">
+                    <table className='mb-4'>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Amount</th>
+                                <th>Total Items</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><Moment format="DD MM YYYY">{payment.created_on}</Moment></td>
+                            <td>${payment.amount}</td>
+                            <td>{payment.cartItems.length}</td>
+                            <td>
+                                <Link to='/viewpayment' state={{payment: prop.payment}}>
+                                    View Details
+                                </Link>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div> 
             
         </>
     )

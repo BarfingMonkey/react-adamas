@@ -20,16 +20,17 @@ import {
       console.log(`reducer type: ${type} payload: ${action.payload}`)
       switch(type){
         case SIGNUP_SUCCESS:
+            console.log('sign up payload: ',payload.data)
             return{
                 ...state,
                 isLoggedIn:false,
-                data: payload.data
+                data: null
             };
         case SIGNUP_FAILURE:
             return{
                 ...state,
                 isLoggedIn: false,
-                data: payload.data
+                data: null
             }
         case LOGIN_SUCCESS:
             return{

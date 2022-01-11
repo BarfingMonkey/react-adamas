@@ -31,7 +31,7 @@ export const getPaymentHistory=(id)=>{
         dispatch(getPaymentHistoryRequest())
         axios({
             method: 'get',
-            url:`http://localhost:8000/api/paymenthistory/${id}`,
+            url:`http://localhost:8000/api/publicsite/paymenthistory/${id}`,
         })
         .then((res)=>{
             const paymentHistory = res.data;

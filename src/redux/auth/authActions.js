@@ -6,7 +6,6 @@ import{
     LOGOUT,
 } from './authTypes'
 import axios from 'axios'
-import AuthService from '../../services/authService'
 
 //auth
 export const googleSignup = ()=>(dispatch)=>{
@@ -30,7 +29,6 @@ export const googleSignup = ()=>(dispatch)=>{
                 })
                 return Promise.reject();
             }
-            console.log(res.data)
         })
         .catch(err=>console.log(err))
 }
@@ -43,16 +41,17 @@ export const signup = (formdata)=>(dispatch)=>{
         withCredentials: true,
     })
     .then((res)=>{
-        console.log('sign up ip hit', res)
-        if(res.data==="Successfully Authenticated"){
+        console.log('sign up ip hit', res.data)
+        if(res.data==="Signup Successful"){
             dispatch({
-                type: LOGIN_SUCCESS,
+                type: SIGNUP_SUCCESS,
                 payload: {data: res.data}
             });
             return Promise.resolve();
         }
         else{
-            dispatch({SIGNUP_FAILURE,
+            dispatch({
+                type: SIGNUP_FAILURE,
                 payload: {data: res.data}
             })
             return Promise.reject();
@@ -97,5 +96,4 @@ export const logout=()=>(dispatch)=>{
             type: LOGOUT
         });
     })
-    
 };

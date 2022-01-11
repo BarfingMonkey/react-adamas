@@ -31,6 +31,7 @@ const HeaderTop= (prop)=>{
                   {isLoggedIn ? 
                   ( <>
                       <li><Link className="text-decoration-none text-light slash" to="/cart">YOUR CART ({numOfCartItem})</Link></li>
+                      <li><Link className="text-decoration-none text-light slash" to="/paymenthistory">PAYMENT HISTORY</Link></li>
                       <li><button className="text-decoration-none text-light log-out-button"  onClick={()=>dispatch(logout()).then(()=>console.log('callback'))}> LOG OUT</button></li>
                     </>
                   )
