@@ -6,6 +6,14 @@ import shopReducer from './shop/shopReducer'
 import productPreviewReducer from './productpreview/productPreviewReducer'
 import cartReducer from './cart/cartReducer'
 import paymentHistoryReducer from './paymenthistory/paymentHistoryReducer'
+import { persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+
+const persistConfig = {
+    key: 'root',
+    storage,
+    whitelist: ['auth']
+}
 
 const rootReducer = combineReducers({
     auth: authReducer,
@@ -17,4 +25,4 @@ const rootReducer = combineReducers({
     paymentHistory: paymentHistoryReducer, 
 })
 
-export default rootReducer;
+export default persistReducer(persistConfig, rootReducer);

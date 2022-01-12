@@ -14,7 +14,8 @@ import PaymentHistory from './PaymentHistory/PaymentHistory';
 import ViewPayment from './PaymentHistory/ViewPayment';
 
 import {Provider} from 'react-redux'
-import store from './redux/store'
+import { PersistGate } from 'redux-persist/integration/react';
+import {store, persistor} from './redux/store'
 import ProtectedRoutes from './ProtectedRoutes/ProtectedRoutes';
 
 function App() {
@@ -22,22 +23,24 @@ function App() {
   return (
     <Provider store={store}>
       <BrowserRouter>
-         <HeaderComponent/>
-          <Routes>
-            <Route path='/' element={<Main/>}/>
-            <Route exact path='/' element={<ProtectedRoutes/>}>
-              <Route path="/cart" element={<Cart/>}/>
-              <Route path="/payment" element={<StripePayment/>}/>
-              <Route path="/paymenthistory" element={<PaymentHistory/>}/>
-              <Route path="/viewpayment" element={<ViewPayment/>}/>
-            </Route>
-            <Route path='/categories' element={<Category />}/>
-            <Route path="/categories/product/:id" element={<ProductPreview/>}/>
-            <Route path="/signup" element={<SignUp/>}/>
-            <Route path="/login" element={<LogIn/>}/>
-            <Route path='/*' element={<PageNotFound/>}/>
-          </Routes>
-        <FooterComponent/> 
+        <PersistGate persistor={persistor}>
+          <HeaderComponent/>
+              <Routes>
+                <Route path='/' element={<Main/>}/>
+                <Route exact path='/' element={<ProtectedRoutes/>}>
+                  <Route path="/cart" element={<Cart/>}/>
+                  <Route path="/payment" element={<StripePayment/>}/>
+                  <Route path="/paymenthistory" element={<PaymentHistory/>}/>
+                  <Route path="/viewpayment" element={<ViewPayment/>}/>
+                </Route>
+                <Route path='/categories' element={<Category />}/>
+                <Route path="/categories/product/:id" element={<ProductPreview/>}/>
+                <Route path="/signup" element={<SignUp/>}/>
+                <Route path="/login" element={<LogIn/>}/>
+                <Route path='/*' element={<PageNotFound/>}/>
+              </Routes>
+            <FooterComponent/>
+        </PersistGate>
       </BrowserRouter>
     </Provider>
   );
